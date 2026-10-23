@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="th" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Sumet Konnak | Robotics & Edge AI Systems Engineer</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter, Space Grotesk, JetBrains Mono, Noto Sans Thai -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Noto Sans Thai', 'Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'Noto Sans Thai', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        cyber: {
+                            bg: '#060A12',
+                            card: '#0F172A',
+                            border: '#1E293B',
+                            cyan: '#06B6D4',
+                            emerald: '#10B981',
+                            amber: '#F59E0B',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Subtle Engineering Grid Background */
+        .bg-grid-pattern {
+            background-size: 28px 28px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+        }
+
+        /* Hide Scrollbar for Horizontal Filter Pills on Mobile */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* HUD Corner Accents */
+        .hud-corner {
+            position: relative;
+        }
+        .hud-corner::before, .hud-corner::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            pointer-events: none;
+        }
+        .hud-corner::before {
+            top: -1px;
+            left: -1px;
+            border-top: 2px solid #06B6D4;
+            border-left: 2px solid #06B6D4;
+            border-top-left-radius: 6px;
+        }
+        .hud-corner::after {
+            bottom: -1px;
+            right: -1px;
+            border-bottom: 2px solid #06B6D4;
+            border-right: 2px solid #06B6D4;
+            border-bottom-right-radius: 6px;
+        }
+
+        /* Print Specific Styles for 1-Page A4 Resume */
+        @media print {
+            @page {
+                size: A4;
+                margin: 10mm;
+            }
+            body {
+                background-color: #ffffff !important;
+                color: #000000 !important;
+                padding: 0 !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            #resume-view {
+                display: block !important;
+                padding: 0 !important;
+            }
+            #a4-resume-sheet {
+                box-shadow: none !important;
+                border: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-cyber-bg text-slate-100 font-sans antialiased selection:bg-cyan-500 selection:text-slate-950 min-h-screen flex flex-col bg-grid-pattern pb-20 md:pb-0">
+
+    <!-- Toast Notification Message Box (No alert() rule compliance) -->
+    <div id="toast" class="fixed top-20 right-4 left-4 sm:left-auto sm:right-6 z-50 transform -translate-y-24 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-3 bg-slate-900/95 border border-cyan-500/60 text-cyan-400 px-4 py-3.5 rounded-2xl shadow-2xl backdrop-blur-xl max-w-sm ml-auto">
+        <i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-400 shrink-0"></i>
+        <span id="toast-message" class="text-sm font-medium text-white leading-snug">ดำเนินการเรียบร้อยแล้ว</span>
+    </div>
+
+    <!-- Top Navigation Bar -->
+    <header class="sticky top-0 z-40 backdrop-blur-xl bg-cyber-bg/90 border-b border-slate-800/80 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
+            <!-- Brand / Avatar Profile -->
+            <div class="flex items-center gap-3 min-w-0">
+                <div class="relative w-10 h-10 rounded-xl overflow-hidden bg-gradient-to-br from-cyan-500/20 to-emerald-500/20 border border-cyan-500/40 flex items-center justify-center shrink-0">
+                    <img id="nav-avatar" src="./profile.jpg" alt="Sumet Konnak" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://github.com/MaMarkSama.png';">
+                </div>
+                <div class="truncate">
+                    <div class="flex items-center gap-2">
+                        <span class="font-display font-bold text-white tracking-tight text-sm sm:text-base truncate">SUMET KONNAK <span class="font-sans font-normal text-xs text-slate-400 hidden sm:inline">(สุเมธ ก้อนนาค)</span></span>
+                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 shrink-0">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                            AVAILABLE
+                        </span>
+                    </div>
+                    <p class="text-xs text-slate-400 truncate">Robotics • Edge AI • Embedded Systems</p>
+                </div>
+            </div>
+
+            <!-- Desktop Navigation Links -->
+            <nav id="portfolio-nav" class="hidden lg:flex items-center gap-6 text-sm font-medium text-slate-300">
+                <a href="#projects" class="hover:text-cyan-400 transition-colors">ผลงานโปรเจกต์</a>
+                <a href="#videos" class="hover:text-cyan-400 transition-colors">วิดีโอสาธิต</a>
+                <a href="#architecture" class="hover:text-cyan-400 transition-colors">สถาปัตยกรรม</a>
+                <a href="#skills" class="hover:text-cyan-400 transition-colors">ทักษะ & การศึกษา</a>
+            </nav>
+
+            <!-- Action Controls -->
+            <div class="flex items-center gap-2 shrink-0">
+                <!-- Language Toggle TH/EN -->
+                <button onclick="toggleLanguage()" id="lang-btn" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-xs font-mono text-slate-200 flex items-center gap-1.5 transition-all active:scale-95" title="สลับภาษา ไทย / อังกฤษ">
+                    <i data-lucide="languages" class="w-4 h-4 text-cyan-400"></i>
+                    <span id="lang-label">TH</span>
+                </button>
+
+                <!-- Desktop Mode Switcher -->
+                <div class="hidden sm:flex bg-slate-900/90 p-1 rounded-xl border border-slate-800 items-center">
+                    <button onclick="switchMode('portfolio')" id="tab-portfolio" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-cyan-500 text-slate-950 shadow-sm flex items-center gap-1.5">
+                        <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
+                        <span>พอร์ตโฟลิโอ</span>
+                    </button>
+                    <button onclick="switchMode('resume')" id="tab-resume" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-300 hover:text-white flex items-center gap-1.5">
+                        <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+                        <span>เรซูเม่ A4</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========================================== -->
+    <!-- VIEW 1: INTERACTIVE PORTFOLIO & SHOWCASE   -->
+    <!-- ========================================== -->
+    <main id="portfolio-view" class="flex-grow no-print">
+        
+        <!-- HERO SECTION (Mobile-First Clean & High Readability) -->
+        <section class="relative overflow-hidden pt-6 pb-12 sm:py-16 border-b border-slate-800/80">
+            <!-- Soft Ambient Glow -->
+            <div class="absolute top-12 left-1/2 -translate-x-1/2 w-[340px] sm:w-[600px] h-[260px] bg-cyan-500/10 blur-[110px] pointer-events-none rounded-full"></div>
+            
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+                    
+                    <!-- Left Column: Profile Card, Bio & Direct Action Links -->
+                    <div class="lg:col-span-7 space-y-6">
+                        
+                        <!-- Mobile & Desktop Profile Header Card -->
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-5 bg-slate-900/70 border border-slate-800/90 p-4 sm:p-5 rounded-2xl backdrop-blur-md">
+                            <div class="relative group shrink-0">
+                                <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden border-2 border-cyan-500/50 shadow-lg shadow-cyan-500/10 bg-slate-950">
+                                    <img id="hero-avatar" src="./profile.jpg" alt="Sumet Konnak" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://github.com/MaMarkSama.png';">
+                                </div>
+                                <button onclick="document.getElementById('avatar-upload').click()" class="absolute -bottom-1.5 -right-1.5 w-8 h-8 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 flex items-center justify-center shadow-lg transition-transform active:scale-90" title="เปลี่ยนรูปโปรไฟล์ชั่วคราว">
+                                    <i data-lucide="camera" class="w-4 h-4"></i>
+                                </button>
+                                <input type="file" id="avatar-upload" accept="image/*" class="hidden" onchange="handleAvatarUpload(event)">
+                            </div>
+
+                            <div class="space-y-1.5">
+                                <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-mono">
+                                    <i data-lucide="graduation-cap" class="w-3.5 h-3.5"></i>
+                                    <span>KMUTT • Digital Media Technology</span>
+                                </div>
+                                <h1 class="font-display text-2xl sm:text-3xl font-bold text-white tracking-tight">
+                                    Sumet Konnak <span class="text-slate-300 font-normal text-lg sm:text-xl">(สุเมธ ก้อนนาค)</span>
+                                </h1>
+                                <p class="text-cyan-400 font-medium text-sm sm:text-base">
+                                    Robotics & Systems Engineer | Edge AI & Embedded Systems Specialist
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Easy-to-read Summary Paragraph -->
+                        <p class="text-slate-200 text-base sm:text-lg leading-relaxed" data-i18n="hero_desc">
+                            วิศวกรระบบสมองกลฝังตัวและหุ่นยนต์ เชี่ยวชาญการพัฒนาหุ่นยนต์เคลื่อนที่อัตโนมัติ (AMR), การเร่งความเร็ว Edge AI บนบอร์ดอุตสาหกรรม (<strong class="text-white">AMD Kria KR260, NVIDIA Jetson, Raspberry Pi, ESP32</strong>) และการออกแบบโปรโตคอลสื่อสารความหน่วงต่ำ (<strong class="text-cyan-300">Custom Binary UDP</strong>) พร้อมผลงานพัฒนาเนื้อหาหลักสูตรร่วมกับสมาคมสมองกลฝังตัวไทย (<strong class="text-emerald-300">TESA</strong>)
+                        </p>
+
+                        <!-- Primary Call-to-Action Buttons (Large Touch Targets for Mobile) -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                            <a href="https://www.youtube.com/playlist?list=PLZ8piYZaXEcs" target="_blank" rel="noopener noreferrer" class="w-full px-5 py-3.5 rounded-2xl bg-gradient-to-r from-rose-600 to-red-500 hover:from-rose-500 hover:to-red-400 text-white font-semibold text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-lg shadow-rose-600/25 transition-all active:scale-[0.99]">
+                                <i data-lucide="play-circle" class="w-5 h-5 shrink-0"></i>
+                                <span data-i18n="btn_youtube">ดูวิดีโอตัวอย่างงาน (YouTube)</span>
+                                <i data-lucide="external-link" class="w-4 h-4 opacity-80"></i>
+                            </a>
+
+                            <a href="https://github.com/MaMarkSama" target="_blank" rel="noopener noreferrer" class="w-full px-5 py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-semibold text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-lg transition-all active:scale-[0.99]">
+                                <i data-lucide="github" class="w-5 h-5 text-cyan-400 shrink-0"></i>
+                                <span>GitHub: MaMarkSama</span>
+                                <i data-lucide="external-link" class="w-4 h-4 text-slate-400"></i>
+                            </a>
+                        </div>
+
+                        <!-- Contact Cards Strip (One-Tap Call, Copy Email & View A4 Resume) -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
+                            <a href="tel:0951101602" class="px-4 py-3 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 text-slate-200 text-sm flex items-center justify-between sm:justify-start gap-2.5 transition-colors">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0">
+                                        <i data-lucide="phone" class="w-4 h-4"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-[10px] font-mono text-slate-400 uppercase">โทรศัพท์ (โทรออกได้)</div>
+                                        <div class="font-mono font-semibold text-white">095-110-1602</div>
+                                    </div>
+                                </div>
+                            </a>
+
+                            <button onclick="copyToClipboard('sumet.konnak629@gmail.com', 'คัดลอกอีเมล sumet.konnak629@gmail.com แล้ว!')" class="px-4 py-3 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 text-slate-200 text-sm flex items-center justify-between gap-2 text-left transition-colors">
+                                <div class="flex items-center gap-2.5 min-w-0">
+                                    <div class="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shrink-0">
+                                        <i data-lucide="mail" class="w-4 h-4"></i>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <div class="text-[10px] font-mono text-slate-400 uppercase">อีเมล (แตะเพื่อคัดลอก)</div>
+                                        <div class="font-mono font-medium text-white truncate text-xs">sumet.konnak629@gmail.com</div>
+                                    </div>
+                                </div>
+                                <i data-lucide="copy" class="w-4 h-4 text-slate-500 shrink-0"></i>
+                            </button>
+
+                            <button onclick="switchMode('resume')" class="px-4 py-3 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/40 text-cyan-300 text-sm flex items-center justify-center gap-2 font-semibold transition-colors">
+                                <i data-lucide="printer" class="w-4 h-4 shrink-0"></i>
+                                <span data-i18n="btn_resume">เปิดเรซูเม่ A4 (Print/PDF)</span>
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <!-- Right Column: Interactive Robotics Telemetry HUD Simulation -->
+                    <div class="lg:col-span-5">
+                        <div class="hud-corner bg-slate-900/95 border border-slate-800 rounded-2xl p-4 sm:p-5 shadow-2xl">
+                            <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-3.5">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                                    <span class="font-mono text-xs font-bold text-cyan-400 tracking-wider">KR260 // VISION-TO-MOTION HUD</span>
+                                </div>
+                                <span class="font-mono text-[11px] bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded">DPU ACTIVE</span>
+                            </div>
+
+                            <!-- Simulated Vision & PID Steering Canvas -->
+                            <div class="relative bg-slate-950 rounded-xl overflow-hidden border border-slate-800 h-44 sm:h-48 mb-4 flex flex-col justify-between p-3">
+                                <canvas id="telemetry-canvas" class="absolute inset-0 w-full h-full opacity-85"></canvas>
+                                
+                                <div class="relative z-10 flex justify-between items-start text-[11px] font-mono">
+                                    <div class="bg-slate-950/85 border border-slate-800 px-2.5 py-1 rounded-lg text-emerald-400">
+                                        <div>MODE: CLOSED-LOOP PID</div>
+                                        <div>ERR: <span id="hud-pid-val">+0.042</span> rad</div>
+                                    </div>
+                                    <div class="bg-slate-950/85 border border-slate-800 px-2.5 py-1 rounded-lg text-cyan-400 text-right">
+                                        <div>FPS: <span id="hud-fps-val">58.4</span></div>
+                                        <div>CRC16: <span class="text-emerald-400">OK (0.4ms)</span></div>
+                                    </div>
+                                </div>
+
+                                <div class="relative z-10 flex justify-between items-end gap-2 text-[11px] font-mono">
+                                    <div class="bg-slate-950/85 border border-slate-800 px-2.5 py-1 rounded-lg text-slate-300 truncate">
+                                        V-RESQ: NODE_0 + NODE_1
+                                    </div>
+                                    <button onclick="triggerSimEstop()" id="sim-estop-btn" class="px-3 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/40 border border-rose-500/50 text-rose-300 font-bold transition-colors cursor-pointer shrink-0 active:scale-95">
+                                        TEST E-STOP
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Quick Hardware Highlights -->
+                            <div class="grid grid-cols-3 gap-2 text-center font-mono">
+                                <div class="bg-slate-950/90 border border-slate-800/80 p-2.5 rounded-xl">
+                                    <div class="text-[11px] text-slate-400">FPGA SoC</div>
+                                    <div class="text-xs sm:text-sm font-bold text-white mt-0.5">Kria KR260</div>
+                                </div>
+                                <div class="bg-slate-950/90 border border-slate-800/80 p-2.5 rounded-xl">
+                                    <div class="text-[11px] text-slate-400">Protocol</div>
+                                    <div class="text-xs sm:text-sm font-bold text-cyan-400 mt-0.5">Binary UDP</div>
+                                </div>
+                                <div class="bg-slate-950/90 border border-slate-800/80 p-2.5 rounded-xl">
+                                    <div class="text-[11px] text-slate-400">TESA Course</div>
+                                    <div class="text-xs sm:text-sm font-bold text-emerald-400 mt-0.5">EDGE_AI_201</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- QUICK SHOWCASE HUB BANNER (YouTube Playlist, GitHub & TESA) -->
+        <section id="videos" class="py-10 bg-slate-900/40 border-b border-slate-800/80">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                    <div>
+                        <span class="text-xs font-mono uppercase tracking-wider text-cyan-400">Verified Engineering Evidence</span>
+                        <h2 class="font-display text-xl sm:text-2xl font-bold text-white mt-0.5">
+                            คลังวิดีโอสาธิต ซอร์สโค้ด และผลงานหลักสูตร
+                        </h2>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Card 1: YouTube Demo Playlist -->
+                    <a href="https://www.youtube.com/playlist?list=PLZ8piYZaXEcs" target="_blank" rel="noopener noreferrer" class="group bg-gradient-to-br from-rose-950/40 via-slate-900 to-slate-900 border border-rose-500/30 hover:border-rose-500/70 rounded-2xl p-5 flex flex-col justify-between transition-all shadow-lg">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-2.5 py-1 rounded-lg text-xs font-mono bg-rose-500/20 text-rose-300 border border-rose-500/30 flex items-center gap-1.5">
+                                    <i data-lucide="youtube" class="w-3.5 h-3.5"></i>
+                                    <span>YOUTUBE PLAYLIST</span>
+                                </span>
+                                <i data-lucide="external-link" class="w-4 h-4 text-slate-400 group-hover:text-rose-400 transition-colors"></i>
+                            </div>
+                            <h3 class="font-display font-bold text-lg text-white group-hover:text-rose-300 transition-colors">
+                                วิดีโอสาธิตการทำงานจริง (Demo Videos)
+                            </h3>
+                            <p class="text-sm text-slate-300 mt-1.5 leading-relaxed">
+                                รวมคลิปทดสอบหุ่นยนต์ AMR (KR260), ระบบควบคุมระยะไกล V-ResQ Cockpit HUD และการรันโมเดล AI บนฮาร์ดแวร์จริง
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs font-mono text-rose-300">
+                            <span>คลิกเพื่อเปิดดูเพลย์ลิสต์</span>
+                            <span>→</span>
+                        </div>
+                    </a>
+
+                    <!-- Card 2: GitHub MaMarkSama -->
+                    <a href="https://github.com/MaMarkSama" target="_blank" rel="noopener noreferrer" class="group bg-gradient-to-br from-cyan-950/40 via-slate-900 to-slate-900 border border-cyan-500/30 hover:border-cyan-500/70 rounded-2xl p-5 flex flex-col justify-between transition-all shadow-lg">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-2.5 py-1 rounded-lg text-xs font-mono bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 flex items-center gap-1.5">
+                                    <i data-lucide="github" class="w-3.5 h-3.5"></i>
+                                    <span>GITHUB REPOSITORIES</span>
+                                </span>
+                                <i data-lucide="external-link" class="w-4 h-4 text-slate-400 group-hover:text-cyan-400 transition-colors"></i>
+                            </div>
+                            <h3 class="font-display font-bold text-lg text-white group-hover:text-cyan-300 transition-colors">
+                                github.com/MaMarkSama
+                            </h3>
+                            <p class="text-sm text-slate-300 mt-1.5 leading-relaxed">
+                                แหล่งรวมซอร์สโค้ด โครงสร้างระบบ Multi-Node, โปรโตคอล Binary UDP, สคริปต์ Embedded Linux และระบบ Gemma AI Server
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs font-mono text-cyan-300">
+                            <span>เปิดดู Repository ทั้งหมด</span>
+                            <span>→</span>
+                        </div>
+                    </a>
+
+                    <!-- Card 3: TESA Course Platform -->
+                    <a href="https://course.tesaiot.dev" target="_blank" rel="noopener noreferrer" class="group bg-gradient-to-br from-emerald-950/40 via-slate-900 to-slate-900 border border-emerald-500/30 hover:border-emerald-500/70 rounded-2xl p-5 flex flex-col justify-between transition-all shadow-lg">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-2.5 py-1 rounded-lg text-xs font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1.5">
+                                    <i data-lucide="book-open-check" class="w-3.5 h-3.5"></i>
+                                    <span>TESA COURSEWARE</span>
+                                </span>
+                                <i data-lucide="external-link" class="w-4 h-4 text-slate-400 group-hover:text-emerald-400 transition-colors"></i>
+                            </div>
+                            <h3 class="font-display font-bold text-lg text-white group-hover:text-emerald-300 transition-colors">
+                                Applied Edge AI Vision (KR260/KV260)
+                            </h3>
+                            <p class="text-sm text-slate-300 mt-1.5 leading-relaxed">
+                                ผลงานร่วมพัฒนาเนื้อหาและชุดปฏิบัติการรหัสวิชา FPGA_EDGE_AI_201 บนแพลตฟอร์มการเรียนรู้ของสมาคมสมองกลฝังตัวไทย (TESA)
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs font-mono text-emerald-300">
+                            <span>เข้าสู่เว็บ course.tesaiot.dev</span>
+                            <span>→</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- FEATURED PROJECTS SHOWCASE SECTION -->
+        <section id="projects" class="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+                <div>
+                    <div class="flex items-center gap-2 text-cyan-400 font-mono text-xs uppercase tracking-widest mb-1.5">
+                        <i data-lucide="cpu" class="w-4 h-4"></i>
+                        <span>Project Experience & Technical Impact</span>
+                    </div>
+                    <h2 class="font-display text-2xl sm:text-3xl font-bold text-white" data-i18n="sec_projects_title">
+                        โปรเจกต์และผลงานวิศวกรรม (Project Experience)
+                    </h2>
+                </div>
+
+                <!-- Mobile-Friendly Horizontal Scrollable Filter Pills -->
+                <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1" id="project-filters">
+                    <button onclick="filterProjects('all')" data-filter="all" class="filter-btn shrink-0 px-4 py-2 rounded-xl text-xs font-mono bg-cyan-500 text-slate-950 font-bold transition-all">
+                        ทั้งหมด (4)
+                    </button>
+                    <button onclick="filterProjects('robotics')" data-filter="robotics" class="filter-btn shrink-0 px-4 py-2 rounded-xl text-xs font-mono bg-slate-900 text-slate-300 hover:text-white border border-slate-800 transition-all">
+                        หุ่นยนต์ AMR & Teleop
+                    </button>
+                    <button onclick="filterProjects('edge-ai')" data-filter="edge-ai" class="filter-btn shrink-0 px-4 py-2 rounded-xl text-xs font-mono bg-slate-900 text-slate-300 hover:text-white border border-slate-800 transition-all">
+                        FPGA & Edge AI
+                    </button>
+                    <button onclick="filterProjects('infra')" data-filter="infra" class="filter-btn shrink-0 px-4 py-2 rounded-xl text-xs font-mono bg-slate-900 text-slate-300 hover:text-white border border-slate-800 transition-all">
+                        Private AI Server
+                    </button>
+                </div>
+            </div>
+
+            <!-- Projects Grid (Readable Bullet Points + Direct Links) -->
+            <div id="projects-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Populated dynamically via JS -->
+            </div>
+        </section>
+
+        <!-- INTERACTIVE SYSTEM ARCHITECTURE BLUEPRINTS -->
+        <section id="architecture" class="py-12 sm:py-16 bg-slate-900/50 border-y border-slate-800/80">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+                    <div>
+                        <div class="flex items-center gap-2 text-emerald-400 font-mono text-xs uppercase tracking-widest mb-1.5">
+                            <i data-lucide="network" class="w-4 h-4"></i>
+                            <span>System Blueprints & Dataflow</span>
+                        </div>
+                        <h2 class="font-display text-2xl sm:text-3xl font-bold text-white" data-i18n="sec_arch_title">
+                            แผนผังสถาปัตยกรรมระบบ (System Architecture)
+                        </h2>
+                    </div>
+
+                    <!-- Blueprint Selector Tabs (Scrollable on Mobile) -->
+                    <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+                        <button onclick="selectBlueprint('amr')" id="bp-tab-amr" class="shrink-0 px-4 py-2 rounded-xl text-xs font-mono bg-cyan-500/20 text-cyan-300 border border-cyan-500/50 font-semibold">
+                            1. Kria KR260 Vision-to-Motion
+                        </button>
+                        <button onclick="selectBlueprint('vresq')" id="bp-tab-vresq" class="shrink-0 px-4 py-2 rounded-xl text-xs font-mono bg-slate-900 text-slate-300 border border-slate-800 hover:text-white">
+                            2. V-ResQ Binary UDP
+                        </button>
+                        <button onclick="selectBlueprint('agent')" id="bp-tab-agent" class="shrink-0 px-4 py-2 rounded-xl text-xs font-mono bg-slate-900 text-slate-300 border border-slate-800 hover:text-white">
+                            3. Spec-Driven Agent Pipeline
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Blueprint Content Container -->
+                <div id="blueprint-display" class="bg-slate-950 border border-slate-800 rounded-2xl p-5 sm:p-8 shadow-xl">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- EDUCATION & TECHNICAL SKILLS MATRIX -->
+        <section id="skills" class="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                <!-- Left 5 Cols: Education & TESA Role -->
+                <div class="lg:col-span-5 space-y-6">
+                    <div>
+                        <div class="flex items-center gap-2 text-amber-400 font-mono text-xs uppercase tracking-widest mb-1.5">
+                            <i data-lucide="graduation-cap" class="w-4 h-4"></i>
+                            <span>Academic Background</span>
+                        </div>
+                        <h2 class="font-display text-2xl font-bold text-white" data-i18n="sec_edu_title">
+                            การศึกษา (Education)
+                        </h2>
+                    </div>
+
+                    <!-- KMUTT Card -->
+                    <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 sm:p-6 space-y-4">
+                        <div class="flex items-start justify-between gap-3">
+                            <div>
+                                <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-amber-500/10 text-amber-300 border border-amber-500/30">
+                                    KMUTT • มจธ.
+                                </span>
+                                <h3 class="text-lg font-bold text-white mt-2.5">
+                                    King Mongkut's University of Technology Thonburi (KMUTT)
+                                </h3>
+                                <p class="text-sm text-cyan-400 font-medium mt-0.5">
+                                    Bachelor of Science in Digital Media Technology (Media Technology)
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="pt-3 border-t border-slate-800/80">
+                            <div class="text-xs font-mono text-slate-400 uppercase mb-2.5">Related Coursework:</div>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="px-2.5 py-1 text-xs rounded-lg bg-slate-950 text-slate-200 border border-slate-800">Embedded Systems Design</span>
+                                <span class="px-2.5 py-1 text-xs rounded-lg bg-slate-950 text-slate-200 border border-slate-800">Robotics & Automation</span>
+                                <span class="px-2.5 py-1 text-xs rounded-lg bg-slate-950 text-slate-200 border border-slate-800">Microcontroller Interfacing</span>
+                                <span class="px-2.5 py-1 text-xs rounded-lg bg-slate-950 text-slate-200 border border-slate-800">Computer Networks</span>
+                                <span class="px-2.5 py-1 text-xs rounded-lg bg-slate-950 text-slate-200 border border-slate-800">Operating Systems</span>
+                                <span class="px-2.5 py-1 text-xs rounded-lg bg-slate-950 text-slate-200 border border-slate-800">Computer Vision</span>
+                                <span class="px-2.5 py-1 text-xs rounded-lg bg-slate-950 text-slate-200 border border-slate-800">Digital Signal Processing</span>
+                                <span class="px-2.5 py-1 text-xs rounded-lg bg-slate-950 text-slate-200 border border-slate-800">Distributed Systems Architecture</span>
+                                <span class="px-2.5 py-1 text-xs rounded-lg bg-slate-950 text-slate-200 border border-slate-800">Human-Computer Interaction</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TESA Highlight Box -->
+                    <div class="bg-slate-900/90 border border-emerald-500/30 rounded-2xl p-5 sm:p-6">
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <span class="text-xs font-mono px-2.5 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                                TESA Collaboration
+                            </span>
+                            <a href="https://course.tesaiot.dev" target="_blank" rel="noopener noreferrer" class="text-xs font-mono text-emerald-400 hover:underline flex items-center gap-1">
+                                <span>course.tesaiot.dev</span>
+                                <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                            </a>
+                        </div>
+                        <h3 class="text-base font-bold text-white mt-1">
+                            Technical Course Content Developer — TESA
+                        </h3>
+                        <p class="text-sm text-slate-300 mt-2 leading-relaxed">
+                            ผู้ร่วมพัฒนาเนื้อหาหลักสูตรและชุดปฏิบัติการ <strong>"Applied Edge AI Vision using AMD KR260/KV260 for Robotics and Automation"</strong> (รหัสวิชา FPGA_EDGE_AI_201) สอนการตั้งค่า Ubuntu, Headless SSH, Vitis AI DPU และการควบคุมหุ่นยนต์จริง
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Right 7 Cols: Categorized Technical Skills (Matching Uploaded Resume) -->
+                <div class="lg:col-span-7 space-y-6">
+                    <div>
+                        <div class="flex items-center gap-2 text-cyan-400 font-mono text-xs uppercase tracking-widest mb-1.5">
+                            <i data-lucide="wrench" class="w-4 h-4"></i>
+                            <span>Technical Arsenal</span>
+                        </div>
+                        <h2 class="font-display text-2xl font-bold text-white" data-i18n="sec_skills_title">
+                            ทักษะความเชี่ยวชาญ (Technical Skills)
+                        </h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- Skill Group 1 -->
+                        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5">
+                            <div class="flex items-center gap-2 text-cyan-400 font-mono text-xs uppercase font-bold mb-3">
+                                <i data-lucide="cpu" class="w-4 h-4"></i>
+                                <span>Hardware & Edge Systems</span>
+                            </div>
+                            <p class="text-sm text-slate-200 leading-relaxed">
+                                AMD Xilinx Kria (KR260 Robotics Starter Kit, KV260), NVIDIA Jetson Nano, Raspberry Pi 4/5, ESP32 / ESP32-S3, STM32, Motor Drivers (L298N), PWM, GPIO, Hardware Timers, Sensor Interfacing (I2C, SPI, UART, MIPI-CSI, V4L2)
+                            </p>
+                        </div>
+
+                        <!-- Skill Group 2 -->
+                        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5">
+                            <div class="flex items-center gap-2 text-emerald-400 font-mono text-xs uppercase font-bold mb-3">
+                                <i data-lucide="bot" class="w-4 h-4"></i>
+                                <span>Robotics & Control Systems</span>
+                            </div>
+                            <p class="text-sm text-slate-200 leading-relaxed">
+                                Autonomous Mobile Robots (AMR), Closed-loop Line Tracking, PID Steering Error Correction, Distributed Teleoperation, Digital Gimbal Stabilization, Fail-safe E-Stop & Watchdog Systems
+                            </p>
+                        </div>
+
+                        <!-- Skill Group 3 -->
+                        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5">
+                            <div class="flex items-center gap-2 text-amber-400 font-mono text-xs uppercase font-bold mb-3">
+                                <i data-lucide="sparkles" class="w-4 h-4"></i>
+                                <span>Edge AI & Software Runtime</span>
+                            </div>
+                            <p class="text-sm text-slate-200 leading-relaxed">
+                                AMD Vitis AI Runtime (VART), DPU Architecture, Vitis AI Model Zoo, Quantization/Optimization, OpenCV, PyTorch, Local LLM Ingress (Ollama), Full-Stack Telemetry Web UI
+                            </p>
+                        </div>
+
+                        <!-- Skill Group 4 -->
+                        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5">
+                            <div class="flex items-center gap-2 text-purple-400 font-mono text-xs uppercase font-bold mb-3">
+                                <i data-lucide="radio" class="w-4 h-4"></i>
+                                <span>Networking & Methodologies</span>
+                            </div>
+                            <p class="text-sm text-slate-200 leading-relaxed">
+                                Custom Binary UDP, Struct Serialization, CRC-16 Checksum, Jitter Buffer, Graceful Degradation, Linux Socket Programming, WebSockets, Low-Latency Video Streaming, ngrok Tunneling, Spec-Driven Multi-Agent Pipeline
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- ========================================== -->
+    <!-- VIEW 2: 1-PAGE OFFICIAL A4 RESUME VIEW     -->
+    <!-- (Matches the exact layout of सुเมธ.jpg)    -->
+    <!-- ========================================== -->
+    <section id="resume-view" class="hidden flex-grow py-6 sm:py-8 px-3 sm:px-6">
+        
+        <!-- Top Action Bar for Resume Mode (Hidden when printing) -->
+        <div class="max-w-[210mm] mx-auto mb-5 bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3 no-print">
+            <div class="flex items-center gap-2.5">
+                <button onclick="switchMode('portfolio')" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold flex items-center gap-1.5">
+                    <i data-lucide="arrow-left" class="w-4 h-4 text-cyan-400"></i>
+                    <span>กลับหน้าพอร์ตโฟลิโอ</span>
+                </button>
+                <span class="text-xs text-slate-300 hidden sm:inline">
+                    จัดหน้าตามต้นฉบับเรซูเม่ของคุณ พร้อมคลิกลิงก์หรือสั่งพิมพ์เป็น PDF ขนาด A4
+                </span>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <button onclick="document.getElementById('avatar-upload').click()" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 text-xs font-medium flex items-center gap-1.5">
+                    <i data-lucide="image-plus" class="w-4 h-4"></i>
+                    <span>อัปโหลดรูปติดเรซูเม่</span>
+                </button>
+                <button onclick="window.print()" class="px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-lg shadow-cyan-500/20">
+                    <i data-lucide="printer" class="w-4 h-4"></i>
+                    <span>พิมพ์ / บันทึก PDF</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- A4 Paper Sheet (Exact match with สุเมธ.jpg layout & content) -->
+        <div id="a4-resume-sheet" class="max-w-[210mm] mx-auto bg-white text-slate-900 rounded-xl shadow-2xl p-5 sm:p-10 font-sans text-[12.5px] leading-[1.48]">
+            
+            <!-- Header with Photo on Left & Details on Right (Matches สุเมธ.jpg) -->
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-5 pb-4 mb-4 border-b border-slate-300">
+                <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden border border-slate-300 shrink-0 bg-slate-100">
+                    <img id="resume-avatar" src="./profile.jpg" alt="Sumet Konnak" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://github.com/MaMarkSama.png';">
+                </div>
+
+                <div class="flex-grow">
+                    <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">Sumet Konnak <span class="text-lg sm:text-xl font-medium text-slate-600">(สุเมธ ก้อนนาค)</span></h1>
+                    <div class="text-xs sm:text-sm font-bold text-slate-600 uppercase tracking-wider mt-0.5">
+                        ROBOTICS & SYSTEMS ENGINEER
+                    </div>
+                    <div class="text-xs sm:text-sm font-bold text-slate-600 uppercase tracking-wider">
+                        EDGE AI & EMBEDDED SYSTEMS SPECIALIST
+                    </div>
+
+                    <div class="flex flex-wrap gap-x-5 gap-y-1 text-xs font-semibold text-slate-900 mt-2.5">
+                        <span>Phone : <a href="tel:0951101602" class="hover:underline">0951101602</a></span>
+                        <span>Gmail : <a href="mailto:sumet.konnak629@gmail.com" class="hover:underline">sumet.konnak629@gmail.com</a></span>
+                    </div>
+                    <div class="flex flex-wrap gap-x-5 gap-y-1 text-[11.5px] text-slate-700 mt-1">
+                        <span><strong>GitHub:</strong> <a href="https://github.com/MaMarkSama" target="_blank" class="text-blue-700 underline">github.com/MaMarkSama</a></span>
+                        <span><strong>Demo Videos:</strong> <a href="https://www.youtube.com/playlist?list=PLZ8piYZaXEcs" target="_blank" class="text-blue-700 underline">youtube.com/playlist?list=PLZ8piYZaXEcs</a></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROFESSIONAL SUMMARY -->
+            <div class="mb-4">
+                <div class="flex items-center gap-3 mb-1.5">
+                    <h2 class="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-900 shrink-0">PROFESSIONAL SUMMARY</h2>
+                    <div class="h-px bg-slate-400 flex-grow"></div>
+                </div>
+                <p class="text-slate-800 text-justify leading-relaxed">
+                    Systems & Embedded Software Engineer with a deep technical background in Digital Media Technology and Robotics. Proven track record in architecting distributed robotic platforms, implementing industrial-grade Edge AI acceleration, and designing fault-tolerant low-latency communication protocols. Combines hands-on hardware integration (AMD Kria KR260, Jetson, Raspberry Pi, ESP32) with modern Spec-Driven Multi-Agent automation pipelines. Backed by verified experience as a Technical Course Content Developer for the Thai Embedded Systems Association (TESA), seeking to deliver production-ready autonomy and embedded intelligence in high-impact engineering environments.
+                </p>
+            </div>
+
+            <!-- EDUCATION -->
+            <div class="mb-4">
+                <div class="flex items-center gap-3 mb-1.5">
+                    <h2 class="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-900 shrink-0">EDUCATION</h2>
+                    <div class="h-px bg-slate-400 flex-grow"></div>
+                </div>
+                <div class="font-medium text-slate-900">King Mongkut's University of Technology Thonburi (KMUTT)</div>
+                <div class="text-slate-800">Bachelor of Science in Digital Media Technology (Media Technology)</div>
+                <div class="font-bold text-slate-900 mt-1.5 mb-0.5">Related Coursework</div>
+                <p class="text-slate-800">
+                    Embedded Systems Design, Robotics & Automation, Microcontroller Interfacing, Computer Networks, Operating Systems, Computer Vision, Digital Signal Processing, Distributed Systems Architecture, Human-Computer Interaction
+                </p>
+            </div>
+
+            <!-- PROJECT EXPERIENCE -->
+            <div class="mb-4">
+                <div class="flex items-center gap-3 mb-2">
+                    <h2 class="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-900 shrink-0">PROJECT EXPERIENCE</h2>
+                    <div class="h-px bg-slate-400 flex-grow"></div>
+                </div>
+
+                <!-- Project 1 -->
+                <div class="mb-3">
+                    <div class="font-bold text-slate-900 text-[13.5px]">Autonomous Mobile Robot (AMR) with Hardware Acceleration</div>
+                    <div class="font-bold text-slate-800 text-[12.5px]">Lead Robotics & Systems Integration Engineer</div>
+                    <div class="text-slate-700 text-[11.5px] mb-1">
+                        Technologies: AMD Xilinx Kria KR260, Ubuntu, Vitis AI Model Zoo, DPU Architecture, Computer Vision, GPIO/PWM, L298N Motor Driver
+                    </div>
+                    <ul class="list-disc pl-5 text-slate-800 space-y-0.5">
+                        <li>ออกแบบและประกอบหุ่นยนต์เคลื่อนที่อัตโนมัติ (AMR) 4 ล้อ โดยใช้บอร์ดอุตสาหกรรม AMD Xilinx Kria KR260 Robotics Starter Kit ขับเคลื่อนระบบ Vision-Controlled Motion ผ่านไดรเวอร์ L298N และควบคุมมอเตอร์ด้วยสัญญาณ GPIO/PWM</li>
+                        <li>พัฒนาระบบประมวลผลสัญญาณภาพและอัลกอริทึม Closed-Loop Line Steering Deviation Control คำนวณค่า PID Error แบบเรียลไทม์เพื่อปรับทิศทางการเลี้ยวอย่างแม่นยำ พร้อมหน้าจอมอนิเตอร์ Steering Tracking HUD</li>
+                        <li>นำโมเดลตรวจจับวัตถุแบบเรียลไทม์จาก AMD Vitis AI Model Zoo มาทำอินเฟอเรนซ์บนตัวเร่งฮาร์ดแวร์ DPU เพื่อประมวลผล Bounding Box, Label, Confidence Score และ Frame Rate สำหรับระบบ Decision Logic หน้างาน</li>
+                    </ul>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="mb-3">
+                    <div class="font-bold text-slate-900 text-[13.5px]">V-ResQ: Distributed Teleoperation & Rescue Robotics System</div>
+                    <div class="font-bold text-slate-800 text-[12.5px]">System Architect & Distributed Systems Engineer</div>
+                    <div class="text-slate-700 text-[11.5px] mb-1">
+                        Technologies: NVIDIA Jetson Nano, Raspberry Pi 4, ESP32-S3, Custom Binary UDP, WebSockets, HTML5/JS Cockpit HUD
+                    </div>
+                    <ul class="list-disc pl-5 text-slate-800 space-y-0.5">
+                        <li>พัฒนาโปรโตคอลสื่อสาร Custom Binary UDP พร้อม Checksum CRC-16 และกลไก Jitter Buffer & Graceful Degradation รองรับการถ่ายโอนข้อมูล Telemetry และการสั่งการแบบเรียลไทม์ที่ทนต่อสัญญาณเครือข่ายผันผวน</li>
+                        <li>สร้างหน้าจอ Web Teleoperation Cockpit HUD รองรับการสตรีมวิดีโอสดแบบ Low-Latency, ผสาน Digital Gimbal Image Stabilization, แสดงผลมาตรวัด IMU / เซนเซอร์ระยะทาง ToF, และติดตั้งระบบความปลอดภัย Fail-safe Watchdog / Software E-Stop</li>
+                        <li>ออกแบบสถาปัตยกรรมหุ่นยนต์แบบกระจายศูนย์ (Multi-Node Architecture) แยกการทำงานระหว่าง Node Zero (ประมวลผลเซนเซอร์หลักและสั่งการมอเตอร์) และ Node One (พอร์ตลง Raspberry Pi 4 สำหรับจัดการ Telemetry และเครือข่ายเสริม)</li>
+                    </ul>
+                </div>
+
+                <!-- Project 3 -->
+                <div>
+                    <div class="font-bold text-slate-900 text-[13.5px]">Gemma AI: On-Premise Private AI Infrastructure</div>
+                    <div class="font-bold text-slate-800 text-[12.5px]">Infrastructure & Full-Stack Systems Developer</div>
+                    <div class="text-slate-700 text-[11.5px] mb-1">
+                        Technologies: FastAPI, Python, Local LLMs (Ollama/Gemma), Pytest, Ruff, ngrok Ingress, Windows Desktop Build System
+                    </div>
+                    <ul class="list-disc pl-5 text-slate-800 space-y-0.5">
+                        <li>ออกแบบและติดตั้ง Private AI Server ภายในแล็บ รองรับการให้บริการ Local LLM และ Multimodal Vision พร้อมระบบเชื่อมต่อภายนอกผ่าน Secure Ingress Tunneling (ngrok)</li>
+                        <li>พัฒนาระบบรักษาความปลอดภัย Authentication Middleware ควบคุมการเข้าถึง API และสร้างหน้าจอ Admin Observability Dashboard สำหรับมอนิเตอร์ Token Processing, Memory Footprint และ Latency</li>
+                        <li>พัฒนาระบบ Build Automation และ Packaging Pipeline เพื่อคอมไพล์ระบบเป็น Standalone Executable / Setup Installer บน Windows แบบอัตโนมัติ</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- SKILLS -->
+            <div>
+                <div class="flex items-center gap-3 mb-1.5">
+                    <h2 class="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-900 shrink-0">SKILLS</h2>
+                    <div class="h-px bg-slate-400 flex-grow"></div>
+                </div>
+                <ul class="list-disc pl-5 space-y-0.5 text-slate-800 text-[12px]">
+                    <li><strong>Hardware & Edge Systems:</strong> AMD Xilinx Kria (KR260 Robotics Starter Kit, KV260), NVIDIA Jetson Nano, Raspberry Pi 4/5, ESP32 / ESP32-S3, STM32, Motor Drivers (L298N), PWM, GPIO, Hardware Timers, Sensor Interfacing (I2C, SPI, UART, MIPI-CSI, V4L2)</li>
+                    <li><strong>Robotics & Control Systems:</strong> Autonomous Mobile Robots (AMR), Closed-loop Line Tracking, PID Steering Error Correction, Distributed Teleoperation, Digital Gimbal Stabilization, Fail-safe E-Stop & Watchdog Systems</li>
+                    <li><strong>Edge AI & Software Runtime:</strong> AMD Vitis AI Runtime (VART), DPU Architecture, Vitis AI Model Zoo, Quantization/Optimization, OpenCV, PyTorch, Local LLM Ingress (Ollama), Full-Stack Telemetry Web UI</li>
+                    <li><strong>Networking & Protocols:</strong> Custom Binary UDP, Struct Serialization, CRC-16 Checksum, Jitter Buffer, Graceful Degradation, Linux Socket Programming, WebSockets, Low-Latency Video Streaming, ngrok Tunneling</li>
+                    <li><strong>Methodologies & DevOps:</strong> Spec-Driven Multi-Agent Pipeline</li>
+                    <li><strong>Languages:</strong> Thai (Native), English (Technical Proficiency)</li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- PROJECT DEEP-DIVE MODAL (Mobile Friendly)  -->
+    <!-- ========================================== -->
+    <div id="project-modal" class="fixed inset-0 z-50 hidden bg-slate-950/85 backdrop-blur-md flex items-end sm:items-center justify-center p-0 sm:p-4 no-print">
+        <div class="bg-slate-900 border-t sm:border border-slate-700 rounded-t-3xl sm:rounded-2xl max-w-3xl w-full max-h-[88vh] overflow-y-auto shadow-2xl p-5 sm:p-8 relative">
+            <button onclick="closeProjectModal()" class="sticky top-0 float-right w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center justify-center z-10">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <div id="project-modal-content"></div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- MOBILE BOTTOM NAVIGATION BAR               -->
+    <!-- ========================================== -->
+    <nav class="sm:hidden fixed bottom-0 inset-x-0 z-40 bg-slate-950/95 backdrop-blur-xl border-t border-slate-800 px-2 py-1.5 flex items-center justify-around no-print">
+        <button onclick="switchMode('portfolio'); window.scrollTo({top:0, behavior:'smooth'})" id="mob-nav-home" class="flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl text-cyan-400">
+            <i data-lucide="layout-grid" class="w-5 h-5"></i>
+            <span class="text-[10px] font-medium">พอร์ตโฟลิโอ</span>
+        </button>
+        <a href="#projects" onclick="switchMode('portfolio')" class="flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl text-slate-400 hover:text-white">
+            <i data-lucide="cpu" class="w-5 h-5"></i>
+            <span class="text-[10px] font-medium">โปรเจกต์</span>
+        </a>
+        <a href="https://www.youtube.com/playlist?list=PLZ8piYZaXEcs" target="_blank" rel="noopener noreferrer" class="flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl text-rose-400">
+            <i data-lucide="play-circle" class="w-5 h-5"></i>
+            <span class="text-[10px] font-medium">วิดีโอสาธิต</span>
+        </a>
+        <button onclick="switchMode('resume')" id="mob-nav-resume" class="flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl text-slate-400">
+            <i data-lucide="file-text" class="w-5 h-5"></i>
+            <span class="text-[10px] font-medium">เรซูเม่ A4</span>
+        </button>
+    </nav>
+
+    <!-- Desktop Footer -->
+    <footer class="border-t border-slate-800/80 py-8 text-center text-xs font-mono text-slate-400 no-print">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>SUMET KONNAK // 095-110-1602 // sumet.konnak629@gmail.com</div>
+            <div class="flex flex-wrap items-center justify-center gap-4">
+                <a href="https://github.com/MaMarkSama" target="_blank" class="hover:text-cyan-400">GitHub (MaMarkSama)</a>
+                <span>•</span>
+                <a href="https://www.youtube.com/playlist?list=PLZ8piYZaXEcs" target="_blank" class="hover:text-rose-400">YouTube Demo Playlist</a>
+                <span>•</span>
+                <a href="https://course.tesaiot.dev" target="_blank" class="hover:text-emerald-400">TESA Course Platform</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Application Logic -->
+    <script>
+        let currentLang = 'th';
+        let currentFilter = 'all';
+        let simEstopActive = false;
+
+        // Project Data synchronized with Sumet's Official Resume & Real Links
+        const projectsData = [
+            {
+                id: 'amr-kr260',
+                category: 'robotics edge-ai',
+                badge: 'AMD Kria KR260 • Vitis AI DPU',
+                badgeColor: 'cyan',
+                title: 'Autonomous Mobile Robot (AMR) with Hardware Acceleration',
+                role: 'Lead Robotics & Systems Integration Engineer',
+                tech: ['AMD Xilinx Kria KR260', 'Ubuntu', 'Vitis AI Model Zoo', 'DPU Architecture', 'Computer Vision', 'GPIO/PWM', 'L298N Motor Driver'],
+                highlights_th: [
+                    'ออกแบบและประกอบหุ่นยนต์เคลื่อนที่อัตโนมัติ (AMR) 4 ล้อ โดยใช้บอร์ดอุตสาหกรรม AMD Xilinx Kria KR260 Robotics Starter Kit ขับเคลื่อนระบบ Vision-Controlled Motion ผ่านไดรเวอร์ L298N และควบคุมมอเตอร์ด้วยสัญญาณ GPIO/PWM',
+                    'พัฒนาระบบประมวลผลสัญญาณภาพและอัลกอริทึม Closed-Loop Line Steering Deviation Control คำนวณค่า PID Error แบบเรียลไทม์เพื่อปรับทิศทางการเลี้ยวอย่างแม่นยำ พร้อมหน้าจอมอนิเตอร์ Steering Tracking HUD',
+                    'นำโมเดลตรวจจับวัตถุแบบเรียลไทม์จาก AMD Vitis AI Model Zoo มาทำอินเฟอเรนซ์บนตัวเร่งฮาร์ดแวร์ DPU เพื่อประมวลผล Bounding Box, Label, Confidence Score และ Frame Rate สำหรับระบบ Decision Logic หน้างาน'
+                ],
+                highlights_en: [
+                    'Engineered a 4-wheel Autonomous Mobile Robot (AMR) using the industrial AMD Xilinx Kria KR260 Robotics Starter Kit, driving Vision-Controlled Motion via an L298N motor driver with hardware GPIO/PWM.',
+                    'Developed a Closed-Loop Line Steering Deviation Control algorithm calculating real-time PID error to accurately modulate steering angles, paired with a Steering Tracking HUD.',
+                    'Deployed real-time object detection models from AMD Vitis AI Model Zoo onto the DPU hardware accelerator to compute bounding boxes, labels, confidence scores, and FPS for autonomous decision logic.'
+                ],
+                links: [
+                    { label: 'ดูวิดีโอสาธิต (YouTube)', url: 'https://www.youtube.com/playlist?list=PLZ8piYZaXEcs', icon: 'play-circle', primary: true },
+                    { label: 'GitHub (MaMarkSama)', url: 'https://github.com/MaMarkSama', icon: 'github' }
+                ]
+            },
+            {
+                id: 'vresq-teleop',
+                category: 'robotics',
+                badge: 'Multi-Node • Custom Binary UDP',
+                badgeColor: 'emerald',
+                title: 'V-ResQ: Distributed Teleoperation & Rescue Robotics System',
+                role: 'System Architect & Distributed Systems Engineer',
+                tech: ['NVIDIA Jetson Nano', 'Raspberry Pi 4', 'ESP32-S3', 'Custom Binary UDP', 'CRC-16 Checksum', 'WebSockets', 'HTML5/JS Cockpit HUD'],
+                highlights_th: [
+                    'พัฒนาโปรโตคอลสื่อสาร Custom Binary UDP พร้อม Checksum CRC-16 และกลไก Jitter Buffer & Graceful Degradation รองรับการถ่ายโอนข้อมูล Telemetry และการสั่งการแบบเรียลไทม์ที่ทนต่อสัญญาณเครือข่ายผันผวน',
+                    'สร้างหน้าจอ Web Teleoperation Cockpit HUD รองรับการสตรีมวิดีโอสดแบบ Low-Latency, ผสาน Digital Gimbal Image Stabilization, แสดงผลมาตรวัด IMU / เซนเซอร์ระยะทาง ToF, และติดตั้งระบบความปลอดภัย Fail-safe Watchdog / Software E-Stop',
+                    'ออกแบบสถาปัตยกรรมหุ่นยนต์แบบกระจายศูนย์ (Multi-Node Architecture) แยกการทำงานระหว่าง Node Zero (ประมวลผลเซนเซอร์หลักและสั่งการมอเตอร์) และ Node One (พอร์ตลง Raspberry Pi 4 สำหรับจัดการ Telemetry และเครือข่ายเสริม)'
+                ],
+                highlights_en: [
+                    'Engineered a Custom Binary UDP protocol with CRC-16 checksum verification, Jitter Buffer, and Graceful Degradation for fault-tolerant real-time telemetry and teleoperation.',
+                    'Built a low-latency Web Teleoperation Cockpit HUD featuring Digital Gimbal Image Stabilization, IMU/ToF gauges, and a Fail-safe Watchdog / Software E-Stop cutoff.',
+                    'Architected a Multi-Node distributed system partitioning Node Zero (primary sensor processing & motor control) and Node One (ported to Raspberry Pi 4 for auxiliary telemetry & networking).'
+                ],
+                links: [
+                    { label: 'ดูวิดีโอสาธิต (YouTube)', url: 'https://www.youtube.com/playlist?list=PLZ8piYZaXEcs', icon: 'play-circle', primary: true },
+                    { label: 'GitHub (MaMarkSama)', url: 'https://github.com/MaMarkSama', icon: 'github' }
+                ]
+            },
+            {
+                id: 'gemma-ai-infra',
+                category: 'infra edge-ai',
+                badge: 'Private AI Server • FastAPI',
+                badgeColor: 'amber',
+                title: 'Gemma AI: On-Premise Private AI Infrastructure',
+                role: 'Infrastructure & Full-Stack Systems Developer',
+                tech: ['FastAPI', 'Python', 'Local LLMs (Ollama/Gemma)', 'Pytest', 'Ruff', 'ngrok Ingress', 'Windows Desktop Build System'],
+                highlights_th: [
+                    'ออกแบบและติดตั้ง Private AI Server ภายในแล็บ รองรับการให้บริการ Local LLM และ Multimodal Vision พร้อมระบบเชื่อมต่อภายนอกผ่าน Secure Ingress Tunneling (ngrok)',
+                    'พัฒนาระบบรักษาความปลอดภัย Authentication Middleware ควบคุมการเข้าถึง API และสร้างหน้าจอ Admin Observability Dashboard สำหรับมอนิเตอร์ Token Processing, Memory Footprint และ Latency',
+                    'พัฒนาระบบ Build Automation และ Packaging Pipeline เพื่อคอมไพล์ระบบเป็น Standalone Executable / Setup Installer บน Windows แบบอัตโนมัติ'
+                ],
+                highlights_en: [
+                    'Designed and deployed an on-premise Private AI Server supporting Local LLM and Multimodal Vision inference with external access via Secure Ingress Tunneling (ngrok).',
+                    'Developed Authentication Middleware for API access control and an Admin Observability Dashboard monitoring token throughput, memory footprint, and latency.',
+                    'Created an automated Build & Packaging Pipeline compiling the platform into a standalone Windows Executable / Setup Installer.'
+                ],
+                links: [
+                    { label: 'GitHub (MaMarkSama)', url: 'https://github.com/MaMarkSama', icon: 'github', primary: true },
+                    { label: 'ดูวิดีโอสาธิต (YouTube)', url: 'https://www.youtube.com/playlist?list=PLZ8piYZaXEcs', icon: 'play-circle' }
+                ]
+            },
+            {
+                id: 'tesa-courseware',
+                category: 'edge-ai robotics',
+                badge: 'TESA Official Course • FPGA_EDGE_AI_201',
+                badgeColor: 'emerald',
+                title: 'Applied Edge AI Vision using AMD KR260/KV260 Courseware',
+                role: 'Technical Course Content Developer (TESA Collaboration)',
+                tech: ['AMD Kria KR260/KV260', 'Embedded Linux (Ubuntu)', 'Headless SSH', 'Vitis AI DPU', 'Vision-to-Motion', 'Digital Twin Simulation'],
+                highlights_th: [
+                    'ร่วมพัฒนาเนื้อหาหลักสูตรและแล็บการทดลองเชิงปฏิบัติการบนแพลตฟอร์ม TESA Knowledge and Learning Platform (course.tesaiot.dev)',
+                    'จัดทำคู่มือปฏิบัติการครอบคลุมการตั้งค่า Embedded Linux (Ubuntu), ระบบเครือข่าย และ Headless SSH บนบอร์ด AMD Kria KR260/KV260',
+                    'ออกแบบชุดทดลองเชื่อมโยง Vision Pipeline → Decision Logic → Motion Control เพื่อควบคุมมอเตอร์ผ่าน L298N บนตัวหุ่นยนต์จริง และการประยุกต์ใช้ Digital Twin Simulation'
+                ],
+                highlights_en: [
+                    'Co-developed official laboratory coursework and technical guides on the TESA Knowledge and Learning Platform (course.tesaiot.dev).',
+                    'Authored hands-on guides covering Embedded Linux (Ubuntu) provisioning, networking, and Headless SSH on AMD Kria KR260/KV260 boards.',
+                    'Designed integrated Vision Pipeline → Decision Logic → Motion Control labs driving physical robots via L298N and Digital Twin Simulations.'
+                ],
+                links: [
+                    { label: 'เปิดแพลตฟอร์ม TESA', url: 'https://course.tesaiot.dev', icon: 'external-link', primary: true },
+                    { label: 'ดูวิดีโอสาธิต (YouTube)', url: 'https://www.youtube.com/playlist?list=PLZ8piYZaXEcs', icon: 'play-circle' }
+                ]
+            }
+        ];
+
+        // Architecture Blueprints Data
+        const blueprints = {
+            amr: {
+                title: 'AMD Kria KR260 — Vision-to-Motion & DPU Hardware Acceleration',
+                subtitle: 'สถาปัตยกรรมการประมวลผลภาพบน FPGA DPU สู่ระบบควบคุมมอเตอร์แบบ Closed-Loop PID',
+                steps: [
+                    { icon: 'camera', name: '1. Sensor Input', detail: 'USB / MIPI-CSI Camera', sub: 'Frame Capture & V4L2 Pipeline' },
+                    { icon: 'cpu', name: '2. Vitis AI DPU', detail: 'Hardware Accelerated Inference', sub: 'Bounding Box, Label & Lane ROI' },
+                    { icon: 'activity', name: '3. PID Controller', detail: 'Steering Deviation Control', sub: 'Real-time Error & Speed Modulation' },
+                    { icon: 'zap', name: '4. Actuation', detail: 'Linux GPIO / PWM Subsystem', sub: 'L298N Driver → 4WD DC Motors' }
+                ],
+                codeTitle: 'kr260_vision_to_motion.py',
+                code: `# AMD Kria KR260 Vision-to-Motion Closed-Loop Pipeline
+def process_vision_frame(frame, dpu_runner, pid_controller):
+    # 1. DPU Accelerated Object & Lane Detection
+    detections, lane_center_x = dpu_runner.infer(frame)
+    
+    # 2. Compute Steering Deviation Error
+    frame_center = frame.shape[1] / 2.0
+    steering_error = (lane_center_x - frame_center) / frame_center
+    
+    # 3. Closed-Loop PID Modulation
+    omega = pid_controller.update(steering_error, dt=0.016)
+    left_pwm, right_pwm = compute_differential_drive(base_speed=0.65, omega=omega)
+    
+    # 4. Actuate L298N Motor Driver via Linux PWM/GPIO
+    actuate_l298n_motors(left_pwm, right_pwm)
+    return steering_error, detections`
+            },
+            vresq: {
+                title: 'V-ResQ — Multi-Node Distributed Teleoperation & Binary UDP',
+                subtitle: 'การแยกภาระงานระหว่าง Node Zero และ Node One ด้วยโปรโตคอล Binary UDP ความหน่วงต่ำ',
+                steps: [
+                    { icon: 'monitor', name: 'Web Cockpit HUD', detail: 'Operator Control Station', sub: 'Digital Gimbal + Watchdog E-Stop' },
+                    { icon: 'shield-check', name: 'Binary UDP + CRC16', detail: 'Byte-level Struct Serialization', sub: 'Jitter Buffer & Graceful Degradation' },
+                    { icon: 'server', name: 'Node Zero (Master)', detail: 'Jetson Nano + ESP32-S3', sub: 'Primary Sensors & Motor Control' },
+                    { icon: 'radio', name: 'Node One (Aux)', detail: 'Raspberry Pi 4 Offload Node', sub: 'Secondary Telemetry & Video Stream' }
+                ],
+                codeTitle: 'vresq_udp_packet.h',
+                code: `// Custom Binary UDP Frame with CRC-16 Verification (< 1ms Latency)
+#pragma pack(push, 1)
+typedef struct {
+    uint16_t magic_header;   // 0x5652 ('VR')
+    uint8_t  node_id;        // 0x00 = Node Zero, 0x01 = Node One
+    uint8_t  estop_flags;    // Bit 0: Watchdog OK, Bit 1: E-Stop Triggered
+    int16_t  linear_vel_mm;  // Target linear velocity (mm/s)
+    int16_t  angular_vel_mr; // Target angular velocity (mrad/s)
+    uint32_t seq_timestamp;  // Jitter buffer sequence tracking
+    uint16_t crc16_checksum; // CCITT CRC-16 integrity check
+} VResQCommandPacket;
+#pragma pack(pop)`
+            },
+            agent: {
+                title: 'Spec-Driven Multi-Agent Pipeline (skill.md → Edge Deployment)',
+                subtitle: 'เวิร์กโฟลว์การพัฒนาซอฟต์แวร์ระบบฝังตัวด้วย AI Agent จากไฟล์สัญญาโครงสร้างสู่การดีพลอยจริง',
+                steps: [
+                    { icon: 'message-square-code', name: '1. Interview Agent', detail: 'System Requirements Extraction', sub: 'Hardware pins, UDP struct & timing' },
+                    { icon: 'file-check-2', name: '2. Architecture Contract', detail: 'skill.md Specification', sub: 'Single Source of Truth for Agents' },
+                    { icon: 'bot', name: '3. AI CLI Scaffolding', detail: 'Automated Code Generation', sub: 'Node 0, Node 1 & Web HUD generation' },
+                    { icon: 'terminal', name: '4. Headless SSH Deploy', detail: 'Direct Edge Node Provisioning', sub: 'Automated test & runtime verification' }
+                ],
+                codeTitle: 'skill.md (Architectural Contract)',
+                code: `# Architectural Contract: V-ResQ Distributed Node System
+- **Node Zero (Master):** NVIDIA Jetson Nano + ESP32 via UART 921600 baud
+- **Node One (Auxiliary):** Raspberry Pi 4 Model B (Telemetry & Camera Stream)
+- **Transport Contract:** Binary UDP Port 5005, Little-Endian, CRC-16-CCITT
+- **Fail-Safe Invariant:** If heartbeat delta > 150ms, trigger hardware PWM disarm`
+            }
+        };
+
+        // Render Projects Cards with Clear Bullet Points for Easy Reading on Mobile & Desktop
+        function renderProjects() {
+            const grid = document.getElementById('projects-grid');
+            const filtered = projectsData.filter(p => currentFilter === 'all' || p.category.includes(currentFilter));
+
+            grid.innerHTML = filtered.map(p => {
+                const highlights = currentLang === 'th' ? p.highlights_th : p.highlights_en;
+                const badgeColors = {
+                    cyan: 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30',
+                    emerald: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
+                    amber: 'bg-amber-500/15 text-amber-300 border-amber-500/30'
+                };
+
+                return `
+                <article class="bg-slate-900/90 border border-slate-800 hover:border-cyan-500/50 rounded-2xl p-5 sm:p-6 flex flex-col justify-between transition-all duration-300 shadow-lg">
+                    <div>
+                        <!-- Top Meta -->
+                        <div class="flex items-center justify-between gap-2 mb-3">
+                            <span class="px-2.5 py-1 rounded-lg text-xs font-mono border ${badgeColors[p.badgeColor]}">
+                                ${p.badge}
+                            </span>
+                            <button onclick="openProjectModal('${p.id}')" class="text-xs font-mono text-slate-400 hover:text-cyan-400 flex items-center gap-1 py-1 px-2 rounded-lg bg-slate-950/60 border border-slate-800">
+                                <span>ขยายดู</span>
+                                <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+                            </button>
+                        </div>
+
+                        <!-- Title & Role -->
+                        <h3 class="font-display text-lg sm:text-xl font-bold text-white leading-snug">
+                            ${p.title}
+                        </h3>
+                        <p class="text-xs sm:text-sm font-medium text-cyan-400 mt-1 mb-4">${p.role}</p>
+
+                        <!-- Clear Bullet Points (Direct from Resume for High Readability) -->
+                        <ul class="space-y-2.5 text-sm text-slate-200 leading-relaxed mb-5 list-disc pl-4 marker:text-cyan-400">
+                            ${highlights.map(item => `<li>${item}</li>`).join('')}
+                        </ul>
+
+                        <!-- Tech Stack Tags -->
+                        <div class="flex flex-wrap gap-1.5 mb-5">
+                            ${p.tech.map(t => `
+                                <span class="px-2.5 py-1 text-[11px] font-mono rounded-lg bg-slate-950 text-slate-300 border border-slate-800">
+                                    ${t}
+                                </span>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Action Links Footer -->
+                    <div class="pt-4 border-t border-slate-800/80 flex flex-wrap items-center gap-2.5">
+                        ${p.links.map(l => `
+                            <a href="${l.url}" target="_blank" rel="noopener noreferrer" class="flex-1 sm:flex-initial justify-center px-3.5 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all ${
+                                l.primary 
+                                ? 'bg-cyan-500 hover:bg-cyan-400 text-slate-950 shadow-sm' 
+                                : 'bg-slate-950 hover:bg-slate-800 text-slate-200 border border-slate-800'
+                            }">
+                                <i data-lucide="${l.icon}" class="w-4 h-4 shrink-0"></i>
+                                <span>${l.label}</span>
+                            </a>
+                        `).join('')}
+                    </div>
+                </article>
+                `;
+            }).join('');
+
+            lucide.createIcons();
+        }
+
+        // Filter Projects
+        function filterProjects(category) {
+            currentFilter = category;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if (btn.dataset.filter === category) {
+                    btn.className = 'filter-btn shrink-0 px-4 py-2 rounded-xl text-xs font-mono bg-cyan-500 text-slate-950 font-bold transition-all';
+                } else {
+                    btn.className = 'filter-btn shrink-0 px-4 py-2 rounded-xl text-xs font-mono bg-slate-900 text-slate-300 hover:text-white border border-slate-800 transition-all';
+                }
+            });
+            renderProjects();
+        }
+
+        // Open Project Deep-Dive Modal
+        function openProjectModal(projectId) {
+            const p = projectsData.find(item => item.id === projectId);
+            if (!p) return;
+
+            const highlights = currentLang === 'th' ? p.highlights_th : p.highlights_en;
+            const content = document.getElementById('project-modal-content');
+            content.innerHTML = `
+                <div class="space-y-5 pt-2">
+                    <div>
+                        <span class="px-2.5 py-1 rounded-lg text-xs font-mono bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
+                            ${p.badge}
+                        </span>
+                        <h2 class="font-display text-xl sm:text-2xl font-bold text-white mt-2.5">${p.title}</h2>
+                        <p class="text-sm font-medium text-cyan-400 mt-0.5">${p.role}</p>
+                    </div>
+
+                    <div class="bg-slate-950 p-4 sm:p-5 rounded-2xl border border-slate-800">
+                        <h4 class="text-xs font-mono uppercase text-slate-400 mb-3">รายละเอียดผลงานและการออกแบบระบบ:</h4>
+                        <ul class="space-y-2.5 text-sm sm:text-base text-slate-200 list-disc pl-5 leading-relaxed marker:text-cyan-400">
+                            ${highlights.map(h => `<li>${h}</li>`).join('')}
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 class="text-xs font-mono uppercase text-slate-400 mb-2">Technologies & Hardware Stack:</h4>
+                        <div class="flex flex-wrap gap-1.5">
+                            ${p.tech.map(t => `<span class="px-3 py-1 text-xs font-mono rounded-lg bg-slate-950 text-cyan-300 border border-slate-800">${t}</span>`).join('')}
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-800 flex flex-wrap gap-3">
+                        ${p.links.map(l => `
+                            <a href="${l.url}" target="_blank" rel="noopener noreferrer" class="flex-1 sm:flex-initial justify-center px-4 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs sm:text-sm flex items-center gap-2">
+                                <i data-lucide="${l.icon}" class="w-4 h-4"></i>
+                                <span>${l.label}</span>
+                            </a>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('project-modal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeProjectModal() {
+            document.getElementById('project-modal').classList.add('hidden');
+        }
+
+        // Render System Architecture Blueprint
+        function selectBlueprint(key) {
+            ['amr', 'vresq', 'agent'].forEach(k => {
+                const tab = document.getElementById(`bp-tab-${k}`);
+                if (k === key) {
+                    tab.className = 'shrink-0 px-4 py-2 rounded-xl text-xs font-mono bg-cyan-500/20 text-cyan-300 border border-cyan-500/50 font-semibold';
+                } else {
+                    tab.className = 'shrink-0 px-4 py-2 rounded-xl text-xs font-mono bg-slate-900 text-slate-300 border border-slate-800 hover:text-white';
+                }
+            });
+
+            const bp = blueprints[key];
+            const container = document.getElementById('blueprint-display');
+            container.innerHTML = `
+                <div class="mb-6">
+                    <h3 class="font-display text-lg sm:text-xl font-bold text-white">${bp.title}</h3>
+                    <p class="text-xs sm:text-sm text-slate-300 mt-1">${bp.subtitle}</p>
+                </div>
+
+                <!-- Visual Pipeline Nodes -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 mb-6">
+                    ${bp.steps.map(s => `
+                        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
+                            <div class="flex items-center gap-2.5 mb-2">
+                                <div class="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shrink-0">
+                                    <i data-lucide="${s.icon}" class="w-4 h-4"></i>
+                                </div>
+                                <span class="font-mono text-xs font-bold text-white">${s.name}</span>
+                            </div>
+                            <div class="text-xs font-semibold text-emerald-400">${s.detail}</div>
+                            <div class="text-xs text-slate-300 mt-1">${s.sub}</div>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <!-- Code / Spec Preview Box -->
+                <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+                    <div class="px-4 py-2.5 bg-slate-950 border-b border-slate-800 flex items-center justify-between text-xs font-mono text-slate-400">
+                        <span class="truncate">${bp.codeTitle}</span>
+                        <span class="text-cyan-400 shrink-0 ml-2">ARCHITECTURE SPEC</span>
+                    </div>
+                    <pre class="p-4 text-xs font-mono text-slate-200 overflow-x-auto leading-relaxed"><code>${bp.code}</code></pre>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        // Switch Between Interactive Showcase & 1-Page Printable A4 Resume
+        function switchMode(mode) {
+            const portfolioView = document.getElementById('portfolio-view');
+            const resumeView = document.getElementById('resume-view');
+            const tabPortfolio = document.getElementById('tab-portfolio');
+            const tabResume = document.getElementById('tab-resume');
+            const mobHome = document.getElementById('mob-nav-home');
+            const mobResume = document.getElementById('mob-nav-resume');
+
+            if (mode === 'resume') {
+                portfolioView.classList.add('hidden');
+                resumeView.classList.remove('hidden');
+                if (tabResume && tabPortfolio) {
+                    tabResume.className = 'px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-cyan-500 text-slate-950 shadow-sm flex items-center gap-1.5';
+                    tabPortfolio.className = 'px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-300 hover:text-white flex items-center gap-1.5';
+                }
+                if (mobHome && mobResume) {
+                    mobResume.className = 'flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl text-cyan-400';
+                    mobHome.className = 'flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl text-slate-400';
+                }
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                resumeView.classList.add('hidden');
+                portfolioView.classList.remove('hidden');
+                if (tabResume && tabPortfolio) {
+                    tabPortfolio.className = 'px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-cyan-500 text-slate-950 shadow-sm flex items-center gap-1.5';
+                    tabResume.className = 'px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all text-slate-300 hover:text-white flex items-center gap-1.5';
+                }
+                if (mobHome && mobResume) {
+                    mobHome.className = 'flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl text-cyan-400';
+                    mobResume.className = 'flex flex-col items-center gap-0.5 py-1 px-3 rounded-xl text-slate-400';
+                }
+            }
+        }
+
+        // Custom Profile Photo Upload (Updates Hero, Navbar & A4 Resume Sheet)
+        function handleAvatarUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const dataUrl = e.target.result;
+                document.getElementById('hero-avatar').src = dataUrl;
+                document.getElementById('nav-avatar').src = dataUrl;
+                document.getElementById('resume-avatar').src = dataUrl;
+                showToast('อัปเดตรูปโปรไฟล์ทั้งในหน้าเว็บและหน้าเรซูเม่ A4 เรียบร้อยแล้ว!');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Language Toggle (TH / EN)
+        const i18nDict = {
+            th: {
+                btn_youtube: 'ดูวิดีโอตัวอย่างงาน (YouTube)',
+                btn_resume: 'เปิดเรซูเม่ A4 (Print/PDF)',
+                sec_projects_title: 'โปรเจกต์และผลงานวิศวกรรม (Project Experience)',
+                sec_arch_title: 'แผนผังสถาปัตยกรรมระบบ (System Architecture)',
+                sec_edu_title: 'การศึกษา (Education)',
+                sec_skills_title: 'ทักษะความเชี่ยวชาญ (Technical Skills)'
+            },
+            en: {
+                btn_youtube: 'Watch Demo Videos (YouTube)',
+                btn_resume: 'Open A4 Resume (Print/PDF)',
+                sec_projects_title: 'Engineering Project Experience',
+                sec_arch_title: 'System Architecture & Blueprints',
+                sec_edu_title: 'Academic Education',
+                sec_skills_title: 'Technical Skills & Arsenal'
+            }
+        };
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'th' ? 'en' : 'th';
+            document.getElementById('lang-label').textContent = currentLang.toUpperCase();
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (i18nDict[currentLang][key]) {
+                    el.textContent = i18nDict[currentLang][key];
+                }
+            });
+
+            renderProjects();
+            showToast(currentLang === 'th' ? 'แสดงผลภาษาไทย' : 'Switched to English view');
+        }
+
+        // Clipboard Copy Helper
+        function copyToClipboard(text, message) {
+            const tempInput = document.createElement('textarea');
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            showToast(message);
+        }
+
+        // Toast Notification
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').textContent = msg;
+            toast.classList.remove('-translate-y-24', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('-translate-y-24', 'opacity-0');
+            }, 3000);
+        }
+
+        // Interactive Telemetry Canvas Simulation (KR260 PID Lane Tracking + DPU Box)
+        function initTelemetryCanvas() {
+            const canvas = document.getElementById('telemetry-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let t = 0;
+
+            function resize() {
+                const rect = canvas.parentElement.getBoundingClientRect();
+                canvas.width = rect.width;
+                canvas.height = rect.height;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            function draw() {
+                const w = canvas.width;
+                const h = canvas.height;
+                ctx.clearRect(0, 0, w, h);
+
+                // Horizon Line
+                ctx.strokeStyle = 'rgba(6, 182, 212, 0.25)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(0, h * 0.35);
+                ctx.lineTo(w, h * 0.35);
+                ctx.stroke();
+
+                const offset = simEstopActive ? 0 : Math.sin(t * 0.04) * 24;
+
+                // Left & Right Lane Boundaries
+                ctx.strokeStyle = '#10B981';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(w * 0.35 + offset * 0.3, h * 0.38);
+                ctx.lineTo(w * 0.12 + offset, h);
+                ctx.moveTo(w * 0.65 + offset * 0.3, h * 0.38);
+                ctx.lineTo(w * 0.88 + offset, h);
+                ctx.stroke();
+
+                // Center PID Target Trajectory
+                ctx.setLineDash([4, 4]);
+                ctx.strokeStyle = '#06B6D4';
+                ctx.beginPath();
+                ctx.moveTo(w * 0.5 + offset * 0.3, h * 0.38);
+                ctx.lineTo(w * 0.5 + offset, h);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // Simulated Vitis AI DPU Bounding Box
+                const boxX = w * 0.44 + offset * 0.6;
+                const boxY = h * 0.42;
+                ctx.strokeStyle = simEstopActive ? '#F43F5E' : '#F59E0B';
+                ctx.lineWidth = 1.5;
+                ctx.strokeRect(boxX, boxY, 54, 34);
+
+                ctx.fillStyle = simEstopActive ? '#F43F5E' : '#F59E0B';
+                ctx.font = '10px JetBrains Mono';
+                ctx.fillText(simEstopActive ? 'E-STOP HALT' : 'DPU: TARGET 0.96', boxX, boxY - 4);
+
+                if (!simEstopActive) {
+                    t += 1;
+                    if (t % 12 === 0) {
+                        const err = (offset / 260).toFixed(3);
+                        const fps = (57.5 + Math.random() * 2.2).toFixed(1);
+                        document.getElementById('hud-pid-val').textContent = (err >= 0 ? '+' : '') + err;
+                        document.getElementById('hud-fps-val').textContent = fps;
+                    }
+                }
+
+                requestAnimationFrame(draw);
+            }
+            draw();
+        }
+
+        function triggerSimEstop() {
+            simEstopActive = !simEstopActive;
+            const btn = document.getElementById('sim-estop-btn');
+            if (simEstopActive) {
+                btn.textContent = 'RESET WATCHDOG';
+                btn.className = 'px-3 py-1.5 rounded-lg bg-emerald-500/20 border border-emerald-500/50 text-emerald-300 font-bold transition-colors cursor-pointer shrink-0';
+                showToast('จำลองการทำงาน Software E-Stop: ตัดสัญญาณ PWM มอเตอร์ทันที');
+            } else {
+                btn.textContent = 'TEST E-STOP';
+                btn.className = 'px-3 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/40 border border-rose-500/50 text-rose-300 font-bold transition-colors cursor-pointer shrink-0';
+                showToast('รีเซ็ตระบบ Watchdog: กลับสู่โหมดขับเคลื่อนอัตโนมัติ (AMR Active)');
+            }
+        }
+
+        // Initialize on Window Load
+        window.onload = function() {
+            renderProjects();
+            selectBlueprint('amr');
+            initTelemetryCanvas();
+            lucide.createIcons();
+        };
+    </script>
+</body>
+</html>
